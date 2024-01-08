@@ -1,0 +1,12 @@
+https://data.cityofchicago.org/
+App Token
+mL5FOZC65wiz0ocCeLHHCG1Ha
+Secret Token
+j6v88BDDYIvgLyuT0gi1TrRWkHJ1Fdk2JqIx
+
+Api Key
+zsigy_key1
+Api Key ID
+e3s1wmfcvmp9petxwi1a3st7n
+API Key Secret
+20liiibwet2c0egwzns1eal5tyh4cwoc8et3jqnhlungi4lclm
