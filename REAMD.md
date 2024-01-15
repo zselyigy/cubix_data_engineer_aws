@@ -3,6 +3,8 @@ Created by István Gy. Zsély, version 0.1
 
 email: [zselyigy@gmail.com](email:zselyigy@gmail.com)
 
+[GitHub repo of the project](https://github.com/zselyigy/https---github.com-zselyigy-cubix_data_engineer_aws)
+
 # Aim
 This project demonstrates my ability to work with Python [Pandas library](https://pandas.pydata.org/), the Amazon Web Services, like [AWS S3](https://aws.amazon.com/pm/serv-s3/), [AWS Lambda](https://aws.amazon.com/lambda/), [AWS Glue](https://aws.amazon.com/glue/) and [AWS Athena](https://aws.amazon.com/athena/).
 
