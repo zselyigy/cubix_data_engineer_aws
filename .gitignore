@@ -1,2 +1,3 @@
 .venv/
 venv/
+packages_for_lambda/
