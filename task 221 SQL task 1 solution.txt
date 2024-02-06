@@ -1,0 +1,13 @@
+-- Which 10 companies make the most money? Columns company_name / trip_total (alias to total_fare)
+
+SELECT
+    c.company AS company_name,
+    ROUND(SUM(tt.trip_total), 2) AS total_fare
+FROM "AwsDataCatalog"."chicago_taxi_db"."taxi_trips" AS tt
+    JOIN "AwsDataCatalog"."chicago_taxi_db"."company" AS c
+        ON tt.company_id = c.company_id
+GROUP BY
+    c.company
+ORDER BY
+    total_fare DESC
+LIMIT 10;

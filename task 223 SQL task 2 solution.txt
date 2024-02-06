@@ -1,0 +1,12 @@
+SELECT 
+    ca.community_name AS community_area_name,
+    COUNT(tt.trip_id) AS total_rides
+FROM
+    "AwsDataCatalog"."chicago_taxi_db"."taxi_trips" AS tt
+JOIN "AwsDataCatalog"."chicago_taxi_db"."community_areas" AS ca
+    ON tt.pickup_community_area_id = ca.area_code
+GROUP BY
+    ca.community_name
+ORDER BY
+    total_rides DESC
+LIMIT 10

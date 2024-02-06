@@ -1,0 +1,37 @@
+SELECT
+    DATE(tt.datetime_for_weather) AS date,
+    ROUND(AVG(w.temperature), 2) AS avg_daily_temperature,
+    COUNT(tt.trip_id) AS count_daily_rides
+FROM
+    "AwsDataCatalog"."chicago_taxi_db"."taxi_trips" AS tt
+JOIN "AwsDataCatalog"."chicago_taxi_db"."weather" AS w
+    ON DATE(tt.datetime_for_weather) = DATE(w.datetime)
+JOIN "AwsDataCatalog"."chicago_taxi_db"."date" AS d
+    ON DATE(tt.datetime_for_weather) = d.date
+GROUP BY
+    DATE(tt.datetime_for_weather)
+ORDER BY
+    DATE(tt.datetime_for_weather)
+
+
+A subquery verzió nem működött.
+
+
+
+SELECT
+    DATE(tt.datetime_for_weather) AS date,
+    (SELECT
+        AVG(w.temperature)
+    FROM
+        "AwsDataCatalog"."chicago_taxi_db"."weather" AS w
+    WHERE
+        DATE(tt.datetime_for_weather) = DATE(w.datetime)) AS avg_daily_temperature,
+    COUNT(tt.trip_id) AS count_daily_rides
+FROM
+    "AwsDataCatalog"."chicago_taxi_db"."taxi_trips" AS tt
+JOIN "AwsDataCatalog"."chicago_taxi_db"."date" AS d
+    ON DATE(tt.datetime_for_weather) = d.date
+GROUP BY
+    DATE(tt.datetime_for_weather)
+ORDER BY
+    MIN(d.day_of_week)

@@ -1,0 +1,20 @@
+SELECT
+    CASE
+        WHEN d.day_of_week = 1 THEN 'Monday'
+        WHEN d.day_of_week = 2 THEN 'Tuesday'        
+        WHEN d.day_of_week = 3 THEN 'Wednesday'
+        WHEN d.day_of_week = 4 THEN 'Thursday'
+        WHEN d.day_of_week = 5 THEN 'Friday'
+        WHEN d.day_of_week = 6 THEN 'Saturday'
+        WHEN d.day_of_week = 7 THEN 'Sunday'
+    END AS name_of_day,
+    COUNT(tt.trip_id) AS total_taxi_rides_per_day
+
+FROM
+    "AwsDataCatalog"."chicago_taxi_db"."taxi_trips" AS tt
+JOIN "AwsDataCatalog"."chicago_taxi_db"."date" AS d
+    ON DATE(tt.datetime_for_weather) = d.date
+GROUP BY
+    d.day_of_week
+ORDER BY
+    MIN(d.day_of_week)
