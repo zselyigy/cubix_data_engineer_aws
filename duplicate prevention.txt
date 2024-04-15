@@ -1,0 +1,6 @@
+Lehet, hogy valahol valamit kihagytam a kódból, mert azt tapasztaltam, hogy a new_values_list-be duplikálva is belekerülhetnek az elemek, és a listám vagy később a kódom nem nézi, hogy unique elemeket tartalmaz-e a lista (tesztnél pl. két Y-t írtam, mindkettő belekerült a masterbe). Tudnátok segíteni, hogy mit hagyhattam ki? Köszönöm!
+profil
+Cz. Nagy Eszter kérdezte 13 napja
+A new_values_list-et kell unique-á tenned mielőtt elkészítenéd a new_values_df-et.
+profil
+Balogh Balázs (Cubix Institute of Technology) válaszolta 13 napja

@@ -1,11 +1,12 @@
 # some exploratory data analysis
-from datetime import datetime
+from datetime import date
 from dateutil.relativedelta import relativedelta
 import os
 from typing import Dict
 
 import boto3
 import json
+import logging
 import requests
 
 # 1. DONE get T-2 month taxi data
@@ -79,7 +80,7 @@ def get_weather_data(formatted_datetime: str) -> Dict:
     return weather_data
 
 
-def upload_to_s3(data: Dict, folder_name: str, filename: str) -> None:
+def upload_to_s3(client: boto3.client, data: Dict, folder_name: str, filename: str) -> None:
     """
     Uploads data to an Amazon S3 bucket.
 
@@ -93,26 +94,33 @@ def upload_to_s3(data: Dict, folder_name: str, filename: str) -> None:
     -------
     None: This function does not return any value.
     """
-    
-    client = boto3.client('s3')
     client.put_object(
         Bucket = 'cubix-chicago-taxi-zsigy',
         Key = f'raw_data/to_processed/{folder_name}/{filename}',
         Body = json.dumps(data)
         )
 
-def lambda_handler(event, context):
-    # get the taxi data of the last full month (T-1 months') data
-    current_datetime = datetime.now()    # current date
-    # get the data two months before as a formatted string
-    formatted_datetime = (current_datetime - relativedelta(months=2)).strftime('%Y-%m-%d')
-    
+
+
+# get the credential
+aws_access_key_id = os.getenv('AWS_ACCESS_KEY')
+aws_secretkey_id = os.getenv('AWS_SECRET_KEY')
+# set up the stream logger
+#boto3.set_stream_logger('', logging.DEBUG)
+# set up the boto3 client
+myboto3client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secretkey_id)
+# get the taxi data for a given day
+my_datetime = date.fromisoformat('2024-01-17')
+# get the data for the given day as a formatted string
+for i in range(0, 30):
+    formatted_datetime = (my_datetime + relativedelta(days=i)).strftime('%Y-%m-%d')
+
     taxi_data = get_taxi_data(formatted_datetime)
 
-    weather_data = get_weather_data(formatted_datetime)
+    # weather_data = get_weather_data(formatted_datetime)
 
     taxi_filename = f'taxi_raw_{formatted_datetime}.json'
-    upload_to_s3(data=taxi_data, folder_name='taxi_data', filename=taxi_filename)
-    
-    weather_filename = f'weather_raw_{formatted_datetime}.json'
-    upload_to_s3(data=weather_data, folder_name='weather_data', filename=weather_filename)
+    upload_to_s3(client=myboto3client, data=taxi_data, folder_name='taxi_data', filename=taxi_filename)
+
+# weather_filename = f'weather_raw_{formatted_datetime}.json'
+# upload_to_s3(data=weather_data, folder_name='weather_data', filename=weather_filename)
